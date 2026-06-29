@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayat - Quran Verses for Your Mood</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0d9488;
+            --primary-light: #99f6e4;
+            --primary-dark: #0f766e;
+            --bg: #f0fdfa;
+            --card: #ffffff;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --gold: #d4a853;
+            --gold-light: #fef3c7;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #0f766e 0%, #0d9488 50%, #14b8a6 100%);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            position: relative;
+        }
+
+        .arabic-title {
+            font-family: 'Amiri', serif;
+            font-size: 2rem;
+            margin-bottom: 0.25rem;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        /* PAGE 1: Mood Selection */
+        .mood-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .mood-card {
+            background: var(--card);
+            border-radius: 1rem;
+            padding: 1.75rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            border: 2px solid transparent;
+        }
+
+        .mood-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+            border-color: var(--primary);
+        }
+
+        .mood-card-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .mood-card-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .mood-card-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* PAGE 2: Mood Detail */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .mood-detail-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .back-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .back-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .mood-detail-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .mood-detail-title .icon {
+            font-size: 2rem;
+        }
+
+        .mood-detail-title h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+
+        .mood-detail-title p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .refresh-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+            margin-left: auto;
+            flex-shrink: 0;
+        }
+
+        .refresh-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .refresh-btn.loading .refresh-icon {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Verse Cards */
+        .verses-grid {
+            display: grid;
+            gap: 1.25rem;
+        }
+
+        .verse-card {
+            background: var(--card);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s;
+            animation: fadeInUp 0.4s ease-out both;
+        }
+
+        .verse-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .verse-arabic {
+            font-family: 'Amiri', serif;
+            font-size: 1.75rem;
+            line-height: 2.2;
+            text-align: right;
+            direction: rtl;
+            color: var(--text);
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .verse-translation {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+            font-style: italic;
+        }
+
+        .verse-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .verse-reference {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--primary);
+            background: var(--primary-light);
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+        }
+
+        .audio-btn {
+            background: var(--gold-light);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 0.4rem 0.85rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s;
+        }
+
+        .audio-btn:hover {
+            background: var(--gold);
+            color: white;
+        }
+
+        .audio-btn.playing {
+            background: var(--gold);
+            color: white;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Loading State */
+        .loading-placeholder {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+        }
+
+        .loading-spinner {
+            width: 2.5rem;
+            height: 2.5rem;
+            border: 3px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        /* Error State */
+        .error-message {
+            background: #fef2f2;
+            color: #dc2626;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border);
+            margin-top: 2rem;
+        }
+
+        .footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.75rem;
+            }
+
+            .arabic-title {
+                font-size: 1.5rem;
+            }
+
+            .verse-arabic {
+                font-size: 1.4rem;
+            }
+
+            .mood-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .mood-detail-header {
+                flex-wrap: wrap;
+                gap: 0.75rem;
+            }
+
+            .mood-detail-title {
+                flex: 1;
+            }
+
+            .refresh-btn {
+                width: 100%;
+                justify-content: center;
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="arabic-title">آيَات</div>
+        <h1>Ayat</h1>
+        <p>Quran verses for every mood</p>
+    </header>
+
+    <div class="container">
+        <!-- PAGE 1: Mood Selection -->
+        <div id="page-moods" class="page active">
+            <div class="mood-grid" id="moodGrid"></div>
+        </div>
+
+        <!-- PAGE 2: Mood Detail (Verses) -->
+        <div id="page-verses" class="page">
+            <div class="mood-detail-header">
+                <button class="back-btn" onclick="goBack()">
+                    <span>&larr;</span>
+                    <span>Back</span>
+                </button>
+                <div class="mood-detail-title">
+                    <span class="icon" id="detailIcon"></span>
+                    <div>
+                        <h2 id="detailName"></h2>
+                        <p id="detailDesc"></p>
+                    </div>
+                </div>
+                <button class="refresh-btn" id="refreshBtn" onclick="refreshCurrentMood()">
+                    <span class="refresh-icon">&#x21bb;</span>
+                    <span>New Verses</span>
+                </button>
+            </div>
+            <div id="versesContainer">
+                <div class="loading-placeholder">
+                    <div class="loading-spinner"></div>
+                    <p>Loading verses...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>Verse data from <a href="https://alquran.cloud/api" target="_blank">Al Quran Cloud API</a></p>
+        <p>Audio from <a href="https://everyayah.com" target="_blank">EveryAyah.com</a> - Mishary Rashid Alafasy</p>
+    </footer>
+
+    <script>
+        // Large pool of verses per mood (30+ each for variety on refresh)
+        const MOOD_VERSE_POOLS = {
+            sadness: [
+                { surah: 2, ayah: 153 }, { surah: 2, ayah: 155 }, { surah: 2, ayah: 156 },
+                { surah: 2, ayah: 157 }, { surah: 2, ayah: 286 }, { surah: 3, ayah: 139 },
+                { surah: 3, ayah: 185 }, { surah: 3, ayah: 186 }, { surah: 9, ayah: 40 },
+                { surah: 12, ayah: 86 }, { surah: 12, ayah: 87 }, { surah: 13, ayah: 28 },
+                { surah: 16, ayah: 102 }, { surah: 21, ayah: 83 }, { surah: 21, ayah: 87 },
+                { surah: 26, ayah: 80 }, { surah: 29, ayah: 2 }, { surah: 30, ayah: 60 },
+                { surah: 39, ayah: 10 }, { surah: 65, ayah: 3 }, { surah: 74, ayah: 56 },
+                { surah: 89, ayah: 27 }, { surah: 90, ayah: 4 }, { surah: 91, ayah: 9 },
+                { surah: 93, ayah: 3 }, { surah: 93, ayah: 4 }, { surah: 93, ayah: 5 },
+                { surah: 93, ayah: 6 }, { surah: 93, ayah: 7 }, { surah: 93, ayah: 8 }
+            ],
+            anxiety: [
+                { surah: 2, ayah: 286 }, { surah: 3, ayah: 8 }, { surah: 3, ayah: 173 },
+                { surah: 7, ayah: 56 }, { surah: 9, ayah: 51 }, { surah: 11, ayah: 56 },
+                { surah: 13, ayah: 28 }, { surah: 16, ayah: 102 }, { surah: 18, ayah: 28 },
+                { surah: 20, ayah: 25 }, { surah: 20, ayah: 46 }, { surah: 21, ayah: 87 },
+                { surah: 22, ayah: 35 }, { surah: 25, ayah: 74 }, { surah: 28, ayah: 24 },
+                { surah: 33, ayah: 3 }, { surah: 36, ayah: 82 }, { surah: 38, ayah: 44 },
+                { surah: 41, ayah: 30 }, { surah: 47, ayah: 7 }, { surah: 48, ayah: 4 },
+                { surah: 51, ayah: 50 }, { surah: 59, ayah: 22 }, { surah: 64, ayah: 11 },
+                { surah: 65, ayah: 3 }, { surah: 66, ayah: 8 }, { surah: 94, ayah: 5 },
+                { surah: 94, ayah: 6 }, { surah: 110, ayah: 3 }, { surah: 114, ayah: 1 }
+            ],
+            anger: [
+                { surah: 3, ayah: 134 }, { surah: 3, ayah: 186 }, { surah: 7, ayah: 199 },
+                { surah: 7, ayah: 200 }, { surah: 12, ayah: 90 }, { surah: 13, ayah: 22 },
+                { surah: 16, ayah: 96 }, { surah: 16, ayah: 125 }, { surah: 16, ayah: 126 },
+                { surah: 16, ayah: 127 }, { surah: 20, ayah: 130 }, { surah: 23, ayah: 96 },
+                { surah: 25, ayah: 63 }, { surah: 25, ayah: 72 }, { surah: 28, ayah: 54 },
+                { surah: 38, ayah: 44 }, { surah: 40, ayah: 77 }, { surah: 41, ayah: 34 },
+                { surah: 41, ayah: 35 }, { surah: 41, ayah: 36 }, { surah: 42, ayah: 37 },
+                { surah: 42, ayah: 39 }, { surah: 42, ayah: 40 }, { surah: 42, ayah: 41 },
+                { surah: 42, ayah: 42 }, { surah: 42, ayah: 43 }, { surah: 46, ayah: 35 },
+                { surah: 49, ayah: 10 }, { surah: 50, ayah: 39 }, { surah: 68, ayah: 48 }
+            ],
+            motivation: [
+                { surah: 2, ayah: 45 }, { surah: 2, ayah: 153 }, { surah: 2, ayah: 154 },
+                { surah: 2, ayah: 177 }, { surah: 2, ayah: 277 }, { surah: 3, ayah: 139 },
+                { surah: 3, ayah: 142 }, { surah: 3, ayah: 200 }, { surah: 5, ayah: 35 },
+                { surah: 8, ayah: 46 }, { surah: 11, ayah: 115 }, { surah: 13, ayah: 11 },
+                { surah: 16, ayah: 96 }, { surah: 16, ayah: 97 }, { surah: 17, ayah: 19 },
+                { surah: 18, ayah: 30 }, { surah: 18, ayah: 39 }, { surah: 18, ayah: 58 },
+                { surah: 29, ayah: 69 }, { surah: 32, ayah: 24 }, { surah: 38, ayah: 44 },
+                { surah: 39, ayah: 10 }, { surah: 47, ayah: 7 }, { surah: 53, ayah: 39 },
+                { surah: 53, ayah: 40 }, { surah: 53, ayah: 41 }, { surah: 53, ayah: 42 },
+                { surah: 94, ayah: 5 }, { surah: 94, ayah: 6 }, { surah: 94, ayah: 7 },
+                { surah: 94, ayah: 8 }
+            ],
+            peace: [
+                { surah: 2, ayah: 255 }, { surah: 6, ayah: 17 }, { surah: 7, ayah: 55 },
+                { surah: 8, ayah: 10 }, { surah: 10, ayah: 62 }, { surah: 10, ayah: 63 },
+                { surah: 10, ayah: 64 }, { surah: 11, ayah: 6 }, { surah: 13, ayah: 28 },
+                { surah: 16, ayah: 97 }, { surah: 17, ayah: 82 }, { surah: 21, ayah: 107 },
+                { surah: 22, ayah: 77 }, { surah: 24, ayah: 35 }, { surah: 26, ayah: 80 },
+                { surah: 27, ayah: 62 }, { surah: 33, ayah: 41 }, { surah: 33, ayah: 56 },
+                { surah: 35, ayah: 2 }, { surah: 39, ayah: 23 }, { surah: 39, ayah: 36 },
+                { surah: 41, ayah: 30 }, { surah: 46, ayah: 13 }, { surah: 48, ayah: 4 },
+                { surah: 48, ayah: 26 }, { surah: 55, ayah: 1 }, { surah: 55, ayah: 60 },
+                { surah: 57, ayah: 4 }, { surah: 87, ayah: 1 }, { surah: 97, ayah: 5 }
+            ],
+            gratitude: [
+                { surah: 1, ayah: 1 }, { surah: 1, ayah: 2 }, { surah: 1, ayah: 6 },
+                { surah: 2, ayah: 52 }, { surah: 2, ayah: 152 }, { surah: 2, ayah: 172 },
+                { surah: 2, ayah: 185 }, { surah: 3, ayah: 123 }, { surah: 5, ayah: 6 },
+                { surah: 5, ayah: 89 }, { surah: 14, ayah: 7 }, { surah: 14, ayah: 34 },
+                { surah: 14, ayah: 37 }, { surah: 16, ayah: 14 }, { surah: 16, ayah: 18 },
+                { surah: 16, ayah: 53 }, { surah: 16, ayah: 78 }, { surah: 16, ayah: 83 },
+                { surah: 17, ayah: 3 }, { surah: 27, ayah: 40 }, { surah: 31, ayah: 12 },
+                { surah: 31, ayah: 14 }, { surah: 35, ayah: 30 }, { surah: 36, ayah: 35 },
+                { surah: 36, ayah: 73 }, { surah: 44, ayah: 32 }, { surah: 47, ayah: 15 },
+                { surah: 53, ayah: 32 }, { surah: 55, ayah: 13 }, { surah: 103, ayah: 3 }
+            ],
+            repentance: [
+                { surah: 2, ayah: 37 }, { surah: 2, ayah: 54 }, { surah: 2, ayah: 160 },
+                { surah: 2, ayah: 186 }, { surah: 3, ayah: 89 }, { surah: 3, ayah: 135 },
+                { surah: 3, ayah: 136 }, { surah: 4, ayah: 17 }, { surah: 4, ayah: 64 },
+                { surah: 4, ayah: 110 }, { surah: 5, ayah: 39 }, { surah: 5, ayah: 74 },
+                { surah: 7, ayah: 23 }, { surah: 7, ayah: 143 }, { surah: 9, ayah: 104 },
+                { surah: 9, ayah: 118 }, { surah: 11, ayah: 3 }, { surah: 11, ayah: 90 },
+                { surah: 20, ayah: 82 }, { surah: 24, ayah: 33 }, { surah: 25, ayah: 70 },
+                { surah: 33, ayah: 24 }, { surah: 33, ayah: 70 }, { surah: 39, ayah: 53 },
+                { surah: 40, ayah: 7 }, { surah: 49, ayah: 12 }, { surah: 66, ayah: 8 },
+                { surah: 71, ayah: 10 }, { surah: 73, ayah: 20 }, { surah: 110, ayah: 3 }
+            ],
+            guidance: [
+                { surah: 1, ayah: 6 }, { surah: 1, ayah: 7 }, { surah: 2, ayah: 2 },
+                { surah: 2, ayah: 185 }, { surah: 2, ayah: 186 }, { surah: 2, ayah: 213 },
+                { surah: 2, ayah: 256 }, { surah: 2, ayah: 269 }, { surah: 2, ayah: 272 },
+                { surah: 3, ayah: 7 }, { surah: 3, ayah: 73 }, { surah: 3, ayah: 101 },
+                { surah: 3, ayah: 103 }, { surah: 4, ayah: 175 }, { surah: 5, ayah: 16 },
+                { surah: 6, ayah: 71 }, { surah: 6, ayah: 88 }, { surah: 6, ayah: 125 },
+                { surah: 10, ayah: 9 }, { surah: 12, ayah: 108 }, { surah: 14, ayah: 27 },
+                { surah: 16, ayah: 89 }, { surah: 16, ayah: 93 }, { surah: 17, ayah: 9 },
+                { surah: 17, ayah: 97 }, { surah: 18, ayah: 17 }, { surah: 24, ayah: 35 },
+                { surah: 31, ayah: 32 }, { surah: 35, ayah: 8 }, { surah: 39, ayah: 23 }
+            ],
+            optimism: [
+                { surah: 2, ayah: 218 }, { surah: 2, ayah: 221 }, { surah: 3, ayah: 139 },
+                { surah: 3, ayah: 186 }, { surah: 4, ayah: 128 }, { surah: 4, ayah: 130 },
+                { surah: 9, ayah: 40 }, { surah: 9, ayah: 55 }, { surah: 11, ayah: 119 },
+                { surah: 12, ayah: 87 }, { surah: 12, ayah: 90 }, { surah: 13, ayah: 26 },
+                { surah: 15, ayah: 3 }, { surah: 16, ayah: 40 }, { surah: 16, ayah: 41 },
+                { surah: 16, ayah: 97 }, { surah: 18, ayah: 88 }, { surah: 20, ayah: 74 },
+                { surah: 21, ayah: 90 }, { surah: 22, ayah: 77 }, { surah: 24, ayah: 55 },
+                { surah: 25, ayah: 20 }, { surah: 28, ayah: 35 }, { surah: 29, ayah: 69 },
+                { surah: 32, ayah: 21 }, { surah: 39, ayah: 53 }, { surah: 41, ayah: 31 },
+                { surah: 42, ayah: 19 }, { surah: 47, ayah: 38 }, { surah: 65, ayah: 2 },
+                { surah: 65, ayah: 3 }
+            ]
+        };
+
+        const MOODS = {
+            sadness: { name: "Sadness & Grief", icon: "😢", description: "Verses of comfort for when your heart is heavy" },
+            anxiety: { name: "Anxiety & Fear", icon: "😰", description: "Verses of peace to calm your worries" },
+            anger: { name: "Anger & Frustration", icon: "😡", description: "Verses of patience and self-control" },
+            motivation: { name: "Motivation & Hope", icon: "💪", description: "Verses of strength and perseverance" },
+            peace: { name: "Peace & Serenity", icon: "🕊️", description: "Verses of tranquility and inner peace" },
+            gratitude: { name: "Gratitude & Joy", icon: "😊", description: "Verses of thankfulness and blessings" },
+            repentance: { name: "Repentance & Forgiveness", icon: "🤲", description: "Verses of Allah's mercy and forgiveness" },
+            guidance: { name: "Guidance & Clarity", icon: "🧭", description: "Verses for direction and wisdom" },
+            optimism: { name: "Optimism & New Beginnings", icon: "🌅", description: "Verses of hope and fresh starts" }
+        };
+
+        const AUDIO_BASE_URL = 'https://everyayah.com/data/Alafasy_128kbps/';
+        const VERSES_PER_PAGE = 7;
+
+        // State
+        const state = {
+            currentMood: null,
+            verses: [],
+            currentAudio: null,
+            playingBtn: null,
+            shownIndices: {}
+        };
+
+        // Shuffle utility
+        function shuffle(arr) {
+            const a = [...arr];
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
+        }
+
+        // Get next batch of verses (never repeats until pool exhausted)
+        function getNextVerses(moodKey, count = VERSES_PER_PAGE) {
+            const pool = MOOD_VERSE_POOLS[moodKey];
+            const shown = state.shownIndices[moodKey] || [];
+            const available = pool.map((v, i) => ({ ...v, idx: i })).filter(v => !shown.includes(v.idx));
+
+            if (available.length === 0) {
+                // Reset pool
+                state.shownIndices[moodKey] = [];
+                return getNextVerses(moodKey, count);
+            }
+
+            const shuffled = shuffle(available);
+            const selected = shuffled.slice(0, Math.min(count, shuffled.length));
+            state.shownIndices[moodKey] = [...shown, ...selected.map(v => v.idx)];
+
+            return selected.map(({ surah, ayah }) => ({ surah, ayah }));
+        }
+
+        // API
+        async function fetchVerse(surah, ayah) {
+            try {
+                const [arabicRes, englishRes] = await Promise.all([
+                    fetch(`https://api.alquran.cloud/v1/ayah/${surah}:${ayah}/quran-uthmani`),
+                    fetch(`https://api.alquran.cloud/v1/ayah/${surah}:${ayah}/sahih`)
+                ]);
+
+                const [arabicData, englishData] = await Promise.all([
+                    arabicRes.json(),
+                    englishRes.json()
+                ]);
+
+                return {
+                    surah,
+                    ayah,
+                    arabic: arabicData.data.text,
+                    translation: englishData.data.text,
+                    reference: `${arabicData.data.surah.englishName} ${surah}:${ayah}`,
+                    audioUrl: `${AUDIO_BASE_URL}${String(surah).padStart(3, '0')}${String(ayah).padStart(3, '0')}.mp3`
+                };
+            } catch (error) {
+                console.error(`Error fetching verse ${surah}:${ayah}:`, error);
+                return null;
+            }
+        }
+
+        async function loadVersesForMood(moodKey) {
+            const versesToFetch = getNextVerses(moodKey);
+            const results = await Promise.all(versesToFetch.map(v => fetchVerse(v.surah, v.ayah)));
+            state.verses = results.filter(v => v !== null);
+            renderVerses();
+        }
+
+        // Navigation
+        function showMoodPage(moodKey) {
+            state.currentMood = moodKey;
+            const mood = MOODS[moodKey];
+
+            document.getElementById('page-moods').classList.remove('active');
+            document.getElementById('page-verses').classList.add('active');
+
+            document.getElementById('detailIcon').textContent = mood.icon;
+            document.getElementById('detailName').textContent = mood.name;
+            document.getElementById('detailDesc').textContent = mood.description;
+
+            document.getElementById('versesContainer').innerHTML = `
+                <div class="loading-placeholder">
+                    <div class="loading-spinner"></div>
+                    <p>Loading verses...</p>
+                </div>
+            `;
+
+            window.scrollTo({ top: 0, behavior: 'instant' });
+            loadVersesForMood(moodKey);
+        }
+
+        function goBack() {
+            document.getElementById('page-verses').classList.remove('active');
+            document.getElementById('page-moods').classList.add('active');
+            state.currentMood = null;
+
+            // Stop any playing audio
+            if (state.currentAudio) {
+                state.currentAudio.pause();
+                state.currentAudio = null;
+            }
+
+            window.scrollTo({ top: 0, behavior: 'instant' });
+        }
+
+        function refreshCurrentMood() {
+            if (!state.currentMood) return;
+
+            const btn = document.getElementById('refreshBtn');
+            btn.classList.add('loading');
+
+            loadVersesForMood(state.currentMood).then(() => {
+                btn.classList.remove('loading');
+            });
+        }
+
+        // Render
+        function renderVerses() {
+            const container = document.getElementById('versesContainer');
+
+            if (state.verses.length === 0) {
+                container.innerHTML = `
+                    <div class="error-message">
+                        <p>Failed to load verses. Please try refreshing.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="verses-grid">
+                    ${state.verses.map((v, i) => `
+                        <div class="verse-card" style="animation-delay: ${i * 0.08}s">
+                            <div class="verse-arabic">${v.arabic}</div>
+                            <div class="verse-translation">"${v.translation}"</div>
+                            <div class="verse-footer">
+                                <span class="verse-reference">${v.reference}</span>
+                                <button class="audio-btn" onclick="playAudio('${v.audioUrl}', this)">
+                                    <span class="play-icon">&#9654;</span>
+                                    <span>Play</span>
+                                </button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function renderMoodCards() {
+            const grid = document.getElementById('moodGrid');
+            grid.innerHTML = Object.entries(MOODS).map(([key, mood]) => `
+                <div class="mood-card" onclick="showMoodPage('${key}')">
+                    <span class="mood-card-icon">${mood.icon}</span>
+                    <div class="mood-card-name">${mood.name}</div>
+                    <div class="mood-card-desc">${mood.description}</div>
+                </div>
+            `).join('');
+        }
+
+        // Audio
+        function playAudio(url, btn) {
+            if (state.currentAudio) {
+                state.currentAudio.pause();
+                state.currentAudio = null;
+                if (state.playingBtn) {
+                    state.playingBtn.classList.remove('playing');
+                    state.playingBtn.querySelector('.play-icon').innerHTML = '&#9654;';
+                    state.playingBtn.querySelector('span:last-child').textContent = 'Play';
+                }
+            }
+
+            if (state.playingBtn === btn) {
+                state.playingBtn = null;
+                return;
+            }
+
+            const audio = new Audio(url);
+            state.currentAudio = audio;
+            state.playingBtn = btn;
+
+            btn.classList.add('playing');
+            btn.querySelector('.play-icon').innerHTML = '&#9208;';
+            btn.querySelector('span:last-child').textContent = 'Playing...';
+
+            audio.play().catch(err => {
+                console.error('Audio playback error:', err);
+                btn.classList.remove('playing');
+                btn.querySelector('.play-icon').innerHTML = '&#9654;';
+                btn.querySelector('span:last-child').textContent = 'Play';
+            });
+
+            audio.onended = () => {
+                btn.classList.remove('playing');
+                btn.querySelector('.play-icon').innerHTML = '&#9654;';
+                btn.querySelector('span:last-child').textContent = 'Play';
+                state.currentAudio = null;
+                state.playingBtn = null;
+            };
+        }
+
+        // Handle browser back button
+        window.addEventListener('popstate', (e) => {
+            if (state.currentMood) {
+                goBack();
+            }
+        });
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            renderMoodCards();
+        });
+    </script>
+</body>
+</html>
