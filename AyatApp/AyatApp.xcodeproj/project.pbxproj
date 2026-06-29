@@ -26,7 +26,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = A40000010000000000000001 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = A50000010000000000000001;
+			remoteGlobalIDString = B50000010000000000000001;
 			remoteInfo = AyatApp;
 		};
 /* End PBXContainerItemProxy section */
@@ -147,7 +147,7 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A50000010000000000000001 /* AyatApp */ = {
+		B50000010000000000000001 /* AyatApp */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A80000010000000000000003 /* Build configuration list for PBXNativeTarget "AyatApp" */;
 			buildPhases = (
@@ -164,7 +164,7 @@
 			productReference = A50000010000000000000001 /* AyatApp.app */;
 			productType = "com.apple.product-type.application";
 		};
-		A50000010000000000000002 /* AyatAppTests */ = {
+		B50000010000000000000002 /* AyatAppTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A80000010000000000000004 /* Build configuration list for PBXNativeTarget "AyatAppTests" */;
 			buildPhases = (
@@ -174,7 +174,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				A30000010000000000000001 /* PBXContainerItemProxy */,
+				B30000010000000000000001 /* PBXTargetDependency */,
 			);
 			name = AyatAppTests;
 			productName = AyatAppTests;
@@ -191,12 +191,12 @@
 				LastSwiftUpdateCheck = 1500;
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
-					A50000010000000000000001 = {
+					B50000010000000000000001 = {
 						CreatedOnToolsVersion = 15.0;
 					};
-					A50000010000000000000002 = {
+					B50000010000000000000002 = {
 						CreatedOnToolsVersion = 15.0;
-						TestTargetID = A50000010000000000000001;
+						TestTargetID = B50000010000000000000001;
 					};
 				};
 			};
@@ -213,8 +213,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A50000010000000000000001 /* AyatApp */,
-				A50000010000000000000002 /* AyatAppTests */,
+				B50000010000000000000001 /* AyatApp */,
+				B50000010000000000000002 /* AyatAppTests */,
 			);
 		};
 /* End PBXProject section */
@@ -259,9 +259,9 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		A30000010000000000000001 /* PBXTargetDependency */ = {
+		B30000010000000000000001 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = A50000010000000000000001 /* AyatApp */;
+			target = B50000010000000000000001 /* AyatApp */;
 			targetProxy = A30000010000000000000001 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
